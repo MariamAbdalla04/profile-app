@@ -1,16 +1,35 @@
-# myapp
+This Flutter application is a simple and intuitive demo that allows users to explore information about trees, upload related images, and manage a personal profile picture. It consists of three main screens: Home Page, First Screen (Input Page), and Profile Page.
+ 
+ Features
+Home Page
 
-A new Flutter project.
+Displays a static tree image and description.
 
-## Getting Started
+Shows dynamic content such as a custom title, body text, and uploaded images.
 
-This project is a starting point for a Flutter application.
+Includes like (Favorite) and share buttons.
 
-A few resources to get you started if this is your first Flutter project:
+Navigates to Profile and First Screen pages.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+First Screen
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Allows users to:
+
+Pick multiple images from the gallery.
+
+Add a custom title and description.
+
+Displays a preview of the selected images.
+
+Navigates to the Home Page and passes the entered data and images.
+
+Profile Page
+
+Lets users:
+
+Upload a profile picture from the camera or gallery.
+
+Delete the existing profile picture.
+
+Displays the profile image in a circular avatar.
+

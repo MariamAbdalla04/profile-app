@@ -1,3 +1,5 @@
+Mariam Abdalla Naguib Abdalla      20230830904
+
 This Flutter application is a simple and intuitive demo that allows users to explore information about trees, upload related images, and manage a personal profile picture. It consists of three main screens: Home Page, First Screen (Input Page), and Profile Page.
  
  Features

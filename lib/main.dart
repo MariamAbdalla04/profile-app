@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/home/home_screen/home_page.dart';
-import 'package:myapp/first_screen.dart';
+import 'package:myapp/add_item.dart/item_model.dart';
+import 'package:myapp/dashboard/dashboard_screan.dart';
+import 'package:myapp/dashboard/nav_bar.dart';
+import 'package:myapp/details/details_screen/details_page.dart';
+import 'package:myapp/add_item.dart/add_item_screen.dart';
+import 'package:myapp/favorite.dart/favorite_model.dart';
+import 'package:myapp/profile%20/user_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserModel(),
+        ), // ChangeNotifierProvider
+        ChangeNotifierProvider(
+          create: (context) => ItemModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FavoriteModel(),
+        ), // ChangeNot // ChangeNotifierProvider
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,10 +35,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Tree App',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: const MyHomePage(
-        // Provide named parameters
-      ),
-      routes: {'/first': (context) => const Firstscreen()},
+
+      home:
+          const NavBar(), // Make sure you replace DashboardScreen() with the actual home page widget you want
+      routes: {'/first': (context) => AddItemScreen()},
     );
   }
 }

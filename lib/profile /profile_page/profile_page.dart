@@ -1,20 +1,8 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
+   import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Profile Demo', home: ProfilePage());
-  }
-}
+import 'package:myapp/profile%20/user_model.dart';
+import 'package:provider/provider.dart';
+import '../profile_widget/options.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -24,149 +12,113 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ImagePicker imagePicker = ImagePicker();
-  Uint8List? selectedImage;
-
- Future<void> imageSelector(ImageSource source) async {
-  final XFile? image = await imagePicker.pickImage(source: source);
-
-  if (image != null && mounted) {
-    final Uint8List bytes = await image.readAsBytes(); // read image data
-    setState(() {
-      selectedImage = bytes; // store in memory
-    });
-  }
-}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profile")),
-      body: Column(
-        children: [
-          Center(
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey.shade500,
-                  radius: 100,
-                  child: selectedImage == null
-    ? const Icon(
-        Icons.person,
-        size: 200,
-        color: Colors.white38,
-      )
-    : ClipOval(
-        child: Image.memory(
-          selectedImage!,
-          width: 200,
-          height: 200,
-          fit: BoxFit.cover,
-        ),
+      appBar: AppBar(
+        title: const Text("Profile"),
       ),
-                ),
-                CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 25,
-                  child: IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => SizedBox(
-                          height: 150,
-                          child: Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Profile",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+      body: Consumer<UserModel>(
+        builder: (context, userModel, child) {
+          final user = userModel.user;
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                Center(
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      CircleAvatar(
+                        radius: 100,
+                        backgroundColor: Colors.grey.shade400,
+                        backgroundImage: user?.image != null
+                            ? MemoryImage(user!.image!)  // Use MemoryImage for Uint8List
+                            : null,
+                        child: user?.image == null
+                            ? const Icon(Icons.person,
+                                size: 100, color: Colors.white)
+                            : null,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 25,
+                        child: IconButton(
+                          icon: const Icon(Icons.camera_alt,
+                              size: 20, color: Colors.white),
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => SizedBox(
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 10),
+                                    const Text("Update Profile Picture",
+                                        style: TextStyle(fontSize: 18)),
+                                    const Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Options(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            userModel.imageSelector(
+                                                ImageSource.camera);
+                                          },
+                                          title: "Camera",
+                                          icon: Icons.camera_alt,
+                                        ),
+                                        Options(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            userModel.imageSelector(
+                                                ImageSource.gallery);
+                                          },
+                                          title: "Gallery",
+                                          icon: Icons.image,
+                                        ),
+                                        if (user?.image != null)
+                                          Options(
+                                            onPressed: () {
+                                              userModel.removeImage();
+                                              Navigator.pop(context);
+                                            },
+                                            title: "Delete",
+                                            icon: Icons.delete,
+                                          ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                              const Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Options(
-                                    title: "Camera",
-                                    icon: Icons.camera_alt,
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      imageSelector(ImageSource.camera);
-                                    },
-                                  ),
-                                  Options(
-                                    title: "Gallery",
-                                    icon: Icons.image,
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      imageSelector(ImageSource.gallery);
-                                    },
-                                  ),
-                                 Options(
-  title: "Delete",
-  icon: Icons.delete,
-  color: Colors.red, //
-  onPressed: () {
-    Navigator.pop(context);
-    setState(() {
-      selectedImage = null;
-    });
-  },
-),
-                                ],
-                              ),
-                        ],
-                          ),
+                            );
+                          },
                         ),
-                      );
-               },
-                    icon: const Icon(Icons.camera_alt, color: Colors.white),
+                      ),
+                    ],
                   ),
-            ),
+                ),
+                const SizedBox(height: 30),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text("Name",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(user?.name ?? "No name set"),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: const Text("Bio",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(user?.bio ?? "No bio set"),
+                ),
               ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 }
-
-class Options extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Color? color;
-  final VoidCallback onPressed;
-
-  const Options({
-    required this.onPressed,
-    this.color,
-    required this.title,
-    required this.icon,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconButton(
-          onPressed: onPressed,
-          icon: Icon(icon, color: color ?? Colors.black),
-        ),
-        Text(title),
-      ],
-    );
-  }
-}
-
-
-
-
-

@@ -1,19 +1,43 @@
-# myapp
+Mariam Abdalla Naguib Abdalla    230830904
+ 
+ Features
+Fetches quotes from an online API
 
-A new Flutter project.
+Displays quote, author, and category
+
+Shows loading indicator while fetching
+
+Handles offline or failed API requests with a friendly icon
+
+Beautiful background image for a pleasant user experience
+
+Tech Stack
+Flutter (UI development)
+
+Dart (Logic)
+
+HTTP package (to call the API)
+
+Provider (optional: if you're using state management in other parts)
+ API Key Setup
+This app uses the API Ninjas Quotes API, which requires an API key.
+
+Sign up at: https://api-ninjas.com/api/quotes
+
+Copy your API key
+
+Open service.dart and replace:headers: {
+  'X-Api-Key': 'YOUR_API_KEY_HERE',
+},
+To Do
+Add refresh button to get new quote
+
+Add animations or quote transitions
+
+Add ability to favorite quotes
+
+Save quotes locally
 
 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+https://github.com/user-attachments/assets/724b4b39-9f38-4528-be72-ca424ca89c3c
